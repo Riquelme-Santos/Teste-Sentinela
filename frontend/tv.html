@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>MedFlow | Painel de Chamadas</title>
+
+  <style>
+
+    /* =====================================================
+       RESET
+    ===================================================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       VARIÁVEIS
+    ===================================================== */
+
+    :root {
+
+      --blue: #0b5ed7;
+      --blue-dark: #073b8c;
+      --blue-light: #eaf3ff;
+
+      --cyan: #00a8d6;
+
+      --green: #16a34a;
+
+      --red: #dc2626;
+
+      --white: #ffffff;
+
+      --text: #14213d;
+      --muted: #64748b;
+
+      --background: #eef4f9;
+
+      --border: #dce5ef;
+
+      --shadow:
+        0 15px 40px rgba(15, 23, 42, .10);
+    }
+
+
+    /* =====================================================
+       BODY
+    ===================================================== */
+
+    body {
+
+      width: 100vw;
+      height: 100vh;
+
+      overflow: hidden;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background:
+
+        radial-gradient(
+          circle at 0% 0%,
+          #dbeafe,
+          transparent 35%
+        ),
+
+        radial-gradient(
+          circle at 100% 100%,
+          #dff7ff,
+          transparent 35%
+        ),
+
+        var(--background);
+
+      color: var(--text);
+    }
+
+
+    /* =====================================================
+       PAINEL PRINCIPAL
+    ===================================================== */
+
+    .tv {
+
+      width: 100%;
+      height: 100%;
+
+      padding: 2.2vh 2.5vw;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 1.8vh;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    .header {
+
+      height: 9vh;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding: 0 1.5vw;
+
+      background: rgba(255,255,255,.92);
+
+      border: 1px solid var(--border);
+
+      border-radius: 18px;
+
+      box-shadow: var(--shadow);
+    }
+
+
+    /* LOGO */
+
+    .brand {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 14px;
+    }
+
+    .brand-logo {
+
+      width: 55px;
+      height: 55px;
+
+      border-radius: 15px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--blue),
+          #2488ff
+        );
+
+      position: relative;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      box-shadow:
+        0 7px 20px
+        rgba(11,94,215,.25);
+    }
+
+
+    /* Cruz */
+
+    .brand-logo::before {
+
+      content: "";
+
+      position: absolute;
+
+      width: 29px;
+      height: 8px;
+
+      background: white;
+
+      border-radius: 5px;
+    }
+
+    .brand-logo::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 8px;
+      height: 29px;
+
+      background: white;
+
+      border-radius: 5px;
+    }
+
+
+    .brand-name {
+
+      font-size: 1.8vw;
+
+      font-weight: 800;
+
+      letter-spacing: -.5px;
+    }
+
+    .brand-subtitle {
+
+      font-size: .75vw;
+
+      color: var(--muted);
+
+      margin-top: 3px;
+    }
+
+
+    /* RELÓGIO */
+
+    .clock {
+
+      text-align: right;
+    }
+
+    .clock-time {
+
+      font-size: 2vw;
+
+      font-weight: 800;
+
+      color: var(--blue);
+    }
+
+    .clock-date {
+
+      font-size: .8vw;
+
+      color: var(--muted);
+
+      margin-top: 3px;
+    }
+
+
+    /* =====================================================
+       CONTEÚDO
+    ===================================================== */
+
+    .content {
+
+      flex: 1;
+
+      display: grid;
+
+      grid-template-columns:
+        29% 71%;
+
+      gap: 1.8vw;
+
+      min-height: 0;
+    }
+
+
+    /* =====================================================
+       COLUNA ESQUERDA
+    ===================================================== */
+
+    .left {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 1.8vh;
+
+      min-height: 0;
+    }
+
+
+    /* =====================================================
+       BOX GENÉRICO
+    ===================================================== */
+
+    .box {
+
+      background: rgba(255,255,255,.96);
+
+      border: 1px solid var(--border);
+
+      border-radius: 20px;
+
+      box-shadow: var(--shadow);
+
+      overflow: hidden;
+    }
+
+
+    /* =====================================================
+       LOCAL
+    ===================================================== */
+
+    .location {
+
+      height: 45%;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      position: relative;
+    }
+
+
+    /* Barra superior */
+
+    .location::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+      left: 0;
+      right: 0;
+
+      height: 7px;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--blue),
+          var(--cyan)
+        );
+    }
+
+
+    .small-title {
+
+      font-size: 1vw;
+
+      font-weight: 800;
+
+      color: var(--muted);
+
+      letter-spacing: 1.5px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 5px;
+    }
+
+
+    .location-type {
+
+      font-size: 1.7vw;
+
+      font-weight: 800;
+
+      color: var(--blue);
+
+      text-transform: uppercase;
+
+      margin-bottom: 4px;
+    }
+
+
+    .location-number {
+
+      font-size: 8vw;
+
+      line-height: .95;
+
+      font-weight: 900;
+
+      color: var(--text);
+
+      letter-spacing: -5px;
+    }
+
+
+    .location-status {
+
+      margin-top: 15px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      font-size: .75vw;
+
+      color: var(--muted);
+    }
+
+
+    .status-dot {
+
+      width: 9px;
+      height: 9px;
+
+      border-radius: 50%;
+
+      background: var(--green);
+
+      box-shadow:
+        0 0 0 5px
+        rgba(22,163,74,.10);
+    }
+
+
+    /* =====================================================
+       HISTÓRICO
+    ===================================================== */
+
+    .history {
+
+      flex: 1;
+
+      padding: 1.5vw;
+
+      min-height: 0;
+    }
+
+
+    .history-header {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      margin-bottom: 18px;
+    }
+
+
+    .history-title {
+
+      font-size: 1vw;
+
+      font-weight: 800;
+
+      color: var(--text);
+
+      text-transform: uppercase;
+
+      letter-spacing: 1px;
+    }
+
+
+    .history-badge {
+
+      background: var(--blue-light);
+
+      color: var(--blue);
+
+      padding: 5px 9px;
+
+      border-radius: 20px;
+
+      font-size: .65vw;
+
+      font-weight: 700;
+    }
+
+
+    #history-list {
+
+      list-style: none;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 9px;
+    }
+
+
+    .history-item {
+
+      min-height: 55px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding: 8px 12px;
+
+      background: #f7faff;
+
+      border: 1px solid #e7eef7;
+
+      border-radius: 11px;
+
+      animation: historyIn .3s ease;
+    }
+
+
+    @keyframes historyIn {
+
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+
+    .history-left {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 3px;
+
+      min-width: 0;
+    }
+
+
+    .history-local {
+
+      font-size: .65vw;
+
+      color: var(--blue);
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+    }
+
+
+    .history-patient {
+
+      font-size: .85vw;
+
+      font-weight: 700;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      max-width: 15vw;
+    }
+
+
+    .history-number {
+
+      width: 35px;
+      height: 35px;
+
+      flex-shrink: 0;
+
+      border-radius: 9px;
+
+      background: var(--blue);
+
+      color: white;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-weight: 800;
+
+      font-size: .8vw;
+    }
+
+
+    /* =====================================================
+       COLUNA DIREITA
+    ===================================================== */
+
+    .right {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 1.8vh;
+
+      min-height: 0;
+    }
+
+
+    /* =====================================================
+       CHAMADA PRINCIPAL
+    ===================================================== */
+
+    .patient {
+
+      flex: 1;
+
+      min-height: 0;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
+      text-align: center;
+
+      position: relative;
+
+      padding: 3vw;
+    }
+
+
+    .patient::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+      left: 0;
+      right: 0;
+
+      height: 8px;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--blue),
+          var(--cyan)
+        );
+    }
+
+
+    .patient-label {
+
+      color: var(--muted);
+
+      font-size: 1vw;
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: 2px;
+
+      margin-bottom: 18px;
+    }
+
+
+    .patient-name {
+
+      width: 100%;
+
+      color: var(--text);
+
+      font-size: 5.4vw;
+
+      line-height: 1.05;
+
+      font-weight: 900;
+
+      letter-spacing: -2px;
+
+      word-break: break-word;
+    }
+
+
+    .patient-message {
+
+      margin-top: 20px;
+
+      color: var(--muted);
+
+      font-size: .9vw;
+    }
+
+
+    /* =====================================================
+       RODAPÉ DIREITO
+    ===================================================== */
+
+    .bottom {
+
+      height: 22%;
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 1.8vw;
+    }
+
+
+    .info-card {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 20px;
+    }
+
+
+    .info-icon {
+
+      width: 50px;
+      height: 50px;
+
+      border-radius: 13px;
+
+      background: var(--blue-light);
+
+      color: var(--blue);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 24px;
+
+      margin-right: 15px;
+    }
+
+
+    .info-text {
+
+      text-align: left;
+    }
+
+
+    .info-title {
+
+      font-size: .7vw;
+
+      color: var(--muted);
+
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: 1px;
+    }
+
+
+    .info-value {
+
+      font-size: 1.3vw;
+
+      color: var(--text);
+
+      font-weight: 800;
+
+      margin-top: 5px;
+    }
+
+
+    /* =====================================================
+       FLASH DA NOVA CHAMADA
+    ===================================================== */
+
+    .new-call {
+
+      animation:
+        newCall 1s ease
+        3;
+    }
+
+
+    @keyframes newCall {
+
+      0%,
+      100% {
+        background: rgba(255,255,255,.96);
+      }
+
+      50% {
+        background: #dbeafe;
+
+        box-shadow:
+          0 0 0 8px
+          rgba(37,99,235,.08),
+          0 20px 60px
+          rgba(37,99,235,.20);
+      }
+    }
+
+
+    /* =====================================================
+       TEXTO AGUARDANDO
+    ===================================================== */
+
+    .waiting {
+
+      color: #94a3b8;
+
+      font-size: 4vw;
+    }
+
+
+    /* =====================================================
+       RESPONSIVIDADE
+    ===================================================== */
+
+    @media (max-width: 900px) {
+
+      .tv {
+        padding: 15px;
+      }
+
+      .content {
+        grid-template-columns: 35% 65%;
+      }
+
+      .brand-name {
+        font-size: 20px;
+      }
+
+      .brand-subtitle {
+        font-size: 10px;
+      }
+
+      .clock-time {
+        font-size: 20px;
+      }
+
+      .clock-date {
+        font-size: 10px;
+      }
+
+      .small-title,
+      .history-title,
+      .patient-label {
+        font-size: 10px;
+      }
+
+      .location-type {
+        font-size: 18px;
+      }
+
+      .location-number {
+        font-size: 100px;
+      }
+
+      .patient-name {
+        font-size: 52px;
+      }
+
+      .history-patient {
+        font-size: 11px;
+        max-width: 130px;
+      }
+
+      .history-local {
+        font-size: 9px;
+      }
+
+      .history-number {
+        font-size: 11px;
+      }
+
+      .info-title {
+        font-size: 9px;
+      }
+
+      .info-value {
+        font-size: 15px;
+      }
+    }
+
+  </style>
+<link rel="stylesheet" href="medflow-v2.css">
+<script src="medflow-v2.js" defer></script>
+</head>
+
+
+<body>
+
+  <main class="tv">
+
+
+    <!-- =================================================
+         CABEÇALHO
+    ================================================== -->
+
+    <header class="header">
+
+      <div class="brand">
+
+        <div class="brand-logo"></div>
+
+        <div>
+
+          <div class="brand-name">
+            MedFlow
+          </div>
+
+          <div class="brand-subtitle">
+            Sistema de Atendimento e Triagem
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="clock">
+
+        <div
+          class="clock-time"
+          id="clock"
+        >
+          --:--
+        </div>
+
+        <div
+          class="clock-date"
+          id="date"
+        >
+          --
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- =================================================
+         CONTEÚDO
+    ================================================== -->
+
+    <section class="content">
+
+
+      <!-- ===============================================
+           ESQUERDA
+      ================================================ -->
+
+      <div class="left">
+
+
+        <!-- LOCAL -->
+
+        <div class="box location">
+
+          <div class="small-title">
+            Atendimento
+          </div>
+
+          <div
+            class="location-type"
+            id="local-tipo"
+          >
+            GUICHÊ
+          </div>
+
+          <div
+            class="location-number"
+            id="local-numero"
+          >
+            --
+          </div>
+
+          <div class="location-status">
+
+            <span class="status-dot"></span>
+
+            Painel conectado
+
+          </div>
+
+        </div>
+
+
+        <!-- HISTÓRICO -->
+
+        <div class="box history">
+
+          <div class="history-header">
+
+            <div class="history-title">
+              Últimas chamadas
+            </div>
+
+            <div class="history-badge">
+              RECENTES
+            </div>
+
+          </div>
+
+          <ul id="history-list">
+
+            <!-- preenchido pelo JavaScript -->
+
+          </ul>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===============================================
+           DIREITA
+      ================================================ -->
+
+      <div class="right">
+
+
+        <!-- CHAMADA ATUAL -->
+
+        <div
+          class="box patient"
+          id="patient-box"
+        >
+
+          <div class="patient-label">
+            Próximo atendimento
+          </div>
+
+          <div
+            class="patient-name waiting"
+            id="patient-name"
+          >
+            AGUARDANDO...
+          </div>
+
+          <div class="patient-message">
+            Por favor, dirija-se ao local indicado no painel.
+          </div>
+
+        </div>
+
+
+        <!-- INFORMAÇÕES -->
+
+        <div class="bottom">
+
+
+          <div class="box info-card">
+
+            <div class="info-icon">
+              ℹ
+            </div>
+
+            <div class="info-text">
+
+              <div class="info-title">
+                Orientação
+              </div>
+
+              <div class="info-value">
+                Aguarde sua chamada
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="box info-card">
+
+            <div class="info-icon">
+              ♥
+            </div>
+
+            <div class="info-text">
+
+              <div class="info-title">
+                Atendimento
+              </div>
+
+              <div class="info-value">
+                Seja bem-vindo!
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    /* =====================================================
+       CONFIGURAÇÃO
+    ===================================================== */
+
+    let ultimoId = null;
+
+
+    /* =====================================================
+       ELEMENTOS
+    ===================================================== */
+
+    const patientBox =
+      document.getElementById(
+        "patient-box"
+      );
+
+    const patientName =
+      document.getElementById(
+        "patient-name"
+      );
+
+    const localTipo =
+      document.getElementById(
+        "local-tipo"
+      );
+
+    const localNumero =
+      document.getElementById(
+        "local-numero"
+      );
+
+    const historyList =
+      document.getElementById(
+        "history-list"
+      );
+
+
+    /* =====================================================
+       RELÓGIO
+    ===================================================== */
+
+    function atualizarRelogio() {
+
+      const agora =
+        new Date();
+
+
+      const hora =
+        agora.toLocaleTimeString(
+          "pt-BR",
+          {
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        );
+
+
+      const data =
+        agora.toLocaleDateString(
+          "pt-BR",
+          {
+            weekday: "long",
+            day: "2-digit",
+            month: "long"
+          }
+        );
+
+
+      document.getElementById(
+        "clock"
+      ).textContent = hora;
+
+
+      document.getElementById(
+        "date"
+      ).textContent =
+        data.charAt(0).toUpperCase()
+        + data.slice(1);
+    }
+
+
+    atualizarRelogio();
+
+    setInterval(
+      atualizarRelogio,
+      1000
+    );
+
+
+    /* =====================================================
+       BUSCAR CHAMADA
+    ===================================================== */
+
+    async function atualizar() {
+
+      try {
+
+        const resposta =
+          await fetch(
+            "/tv/chamada",
+            {
+              cache: "no-store"
+            }
+          );
+
+
+        if (!resposta.ok) {
+          throw new Error(
+            "Erro HTTP " +
+            resposta.status
+          );
+        }
+
+
+        const data =
+          await resposta.json();
+
+
+        const chamada =
+          data.chamada;
+
+
+        const historico =
+          data.historico || [];
+
+
+        /* ================================================
+           CHAMADA ATUAL
+        ================================================ */
+
+        if (chamada) {
+
+          localTipo.textContent =
+            chamada.localTipo ||
+            "GUICHÊ";
+
+
+          localNumero.textContent =
+            chamada.localNumero ||
+            "--";
+
+
+          patientName.textContent =
+            chamada.paciente ||
+            "AGUARDANDO...";
+
+
+          patientName.classList.remove(
+            "waiting"
+          );
+
+
+          /* ==============================================
+             NOVA CHAMADA
+          ============================================== */
+
+          if (
+            chamada.id !== ultimoId
+          ) {
+
+            ultimoId =
+              chamada.id;
+
+
+            patientBox.classList.remove(
+              "new-call"
+            );
+
+
+            /* Força reinício da animação */
+
+            void patientBox.offsetWidth;
+
+
+            patientBox.classList.add(
+              "new-call"
+            );
+
+
+            /* Som da chamada */
+
+            tocarSom();
+
+          }
+
+        }
+
+
+        /* ================================================
+           HISTÓRICO
+        ================================================ */
+
+        historyList.innerHTML = "";
+
+
+        historico
+          .slice(0, 5)
+          .forEach(
+            (h) => {
+
+              const li =
+                document.createElement(
+                  "li"
+                );
+
+
+              li.className =
+                "history-item";
+
+
+              const left =
+                document.createElement(
+                  "div"
+                );
+
+
+              left.className =
+                "history-left";
+
+
+              const local =
+                document.createElement(
+                  "div"
+                );
+
+
+              local.className =
+                "history-local";
+
+
+              local.textContent =
+                (
+                  h.localTipo ||
+                  "GUICHÊ"
+                ) +
+                " " +
+                (
+                  h.localNumero ||
+                  "--"
+                );
+
+
+              const patient =
+                document.createElement(
+                  "div"
+                );
+
+
+              patient.className =
+                "history-patient";
+
+
+              patient.textContent =
+                h.paciente ||
+                "Paciente";
+
+
+              left.appendChild(
+                local
+              );
+
+
+              left.appendChild(
+                patient
+              );
+
+
+              const number =
+                document.createElement(
+                  "div"
+                );
+
+
+              number.className =
+                "history-number";
+
+
+              number.textContent =
+                h.localNumero ||
+                "--";
+
+
+              li.appendChild(
+                left
+              );
+
+
+              li.appendChild(
+                number
+              );
+
+
+              historyList.appendChild(
+                li
+              );
+
+            }
+          );
+
+
+      } catch (erro) {
+
+        console.log(
+          "Erro ao buscar chamada:",
+          erro
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       SOM DA CHAMADA
+    ===================================================== */
+
+    function tocarSom() {
+
+      try {
+
+        const audioContext =
+          new (
+            window.AudioContext ||
+            window.webkitAudioContext
+          )();
+
+
+        const oscillator =
+          audioContext.createOscillator();
+
+
+        const gain =
+          audioContext.createGain();
+
+
+        oscillator.type =
+          "sine";
+
+
+        oscillator.frequency.value =
+          880;
+
+
+        gain.gain.setValueAtTime(
+          0.001,
+          audioContext.currentTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.15,
+          audioContext.currentTime + .05
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioContext.currentTime + .6
+        );
+
+
+        oscillator.connect(
+          gain
+        );
+
+
+        gain.connect(
+          audioContext.destination
+        );
+
+
+        oscillator.start();
+
+
+        oscillator.stop(
+          audioContext.currentTime + .6
+        );
+
+      } catch (e) {
+
+        console.log(
+          "Áudio não disponível"
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       PRIMEIRA ATUALIZAÇÃO
+    ===================================================== */
+
+    atualizar();
+
+
+    /* =====================================================
+       ATUALIZA A CADA 2 SEGUNDOS
+    ===================================================== */
+
+    setInterval(
+      atualizar,
+      2000
+    );
+
+  </script>
+
+</body>
+</html>

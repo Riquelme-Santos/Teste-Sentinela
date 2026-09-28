@@ -1,0 +1,5 @@
+-- Este arquivo não é utilizado pelo sistema.
+-- O banco de dados real fica em backend/db.json (JSON em disco,
+-- lido e escrito por backend/app.js).
+-- Mantido aqui apenas como referência caso o projeto migre para
+-- um banco relacional no futuro.
